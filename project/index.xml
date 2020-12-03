@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Projects on My Website</title>
+    <link>/project/</link>
+    <description>Recent content in Projects on My Website</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-US</language><atom:link href="/project/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Project 1: Exploratory Data Analysis</title>
+      <link>/project/project1/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/project/project1/</guid>
+      <description>0. Introduction The two datasets I have chosen are artificially created from the larger United Nations (UN) dataset provided by R. This UN dataset details multiple social indicators for health, welfare, and education for 213 places (most of which are members of the UN). I acquired these data through the carsData, and they contain variables such as life expectancy, total fertility rate, infant mortality, percent urban, and per capita GDP in US dollars.</description>
+    </item>
+    
+    <item>
+      <title>Project 2: Modeling, Testing, and Predicting</title>
+      <link>/project/project2/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/project/project2/</guid>
+      <description>Modeling 0. (5 pts) library(robustbase) crohnD = CrohnD This data set was from a study on 117 patients (therefore, 117 observations) affected by Crohn&#39;s disease, which is a chronic inflammatory disease that is localized in the intestines. It contains 9 variables: patient ID (unique number for each patient), number of adverse events, BMI (with units of kg/m^2), height (in centimeters), country (dichotomous variable, patient is either from country 1 or country 2), sex (male or female), age (in years), weight (in kilograms), and treatment (placebo, drug 1, or drug 2).</description>
+    </item>
+    
+  </channel>
+</rss>

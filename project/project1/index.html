@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="author" content="Brett" />
+    
+    <link rel="shortcut icon" type="image/x-icon" href="../../img/favicon.ico">
+    <title>Project 1: Exploratory Data Analysis</title>
+    <meta name="generator" content="Hugo 0.79.0" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="../../css/main.css" />
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,400,200bold,400old" />
+    
+    <!--[if lt IE 9]>
+			<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+			<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+		<![endif]-->
+
+    
+  </head>
+
+  <body>
+    <div id="wrap">
+      
+      <nav class="navbar navbar-default">
+  <div class="container">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="../../"><i class="fa fa-home"></i></a>
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <div class="navbar-collapse collapse" id="navbar">
+      <ul class="nav navbar-nav navbar-right">
+      
+        
+        <li><a href="../../post/">BLOG</a></li>
+        
+        <li><a href="../../projects/">PROJECTS</a></li>
+        
+        <li><a href="../../resume/">RESUME</a></li>
+        
+      
+      </ul>
+    </div>
+  </div>
+</nav>
+
+      <div class="container">
+        <div class="blog-post">
+          <h3>
+            <strong><a href="../../project/project1/">Project 1: Exploratory Data Analysis</a></strong>
+          </h3>
+        </div>
+ 
+<div class="blog-title">
+          <h4>
+         January 1, 0001 
+            &nbsp;&nbsp;
+            
+          </h4>
+        </div>
+
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="blogpost">
+              
+
+
+<div id="introduction" class="section level2">
+<h2>0. Introduction</h2>
+<p>The two datasets I have chosen are artificially created from the larger United Nations (UN) dataset provided by R. This UN dataset details multiple social indicators for health, welfare, and education for 213 places (most of which are members of the UN). I acquired these data through the carsData, and they contain variables such as life expectancy, total fertility rate, infant mortality, percent urban, and per capita GDP in US dollars. I expect that with higher per capita GDP and percent urban, that life expectancy and total fertility rate will increase, while infant mortality will decrease. These data are interesting to me as I am a public health major interested in epidemiological trends across countries, and what we can learn from them to achieve better health for all.</p>
+</div>
+<div id="tidying-rearranging-widelong" class="section level2">
+<h2>1. Tidying: Rearranging Wide/Long</h2>
+<pre class="r"><code>library(carData)
+library(dplyr)</code></pre>
+<pre><code>## 
+## Attaching package: &#39;dplyr&#39;</code></pre>
+<pre><code>## The following objects are masked from &#39;package:stats&#39;:
+## 
+##     filter, lag</code></pre>
+<pre><code>## The following objects are masked from &#39;package:base&#39;:
+## 
+##     intersect, setdiff, setequal, union</code></pre>
+<pre class="r"><code>library(tidyverse)</code></pre>
+<pre><code>## ── Attaching packages ── tidyverse 1.3.0 ──</code></pre>
+<pre><code>## ✓ ggplot2 3.3.2     ✓ purrr   0.3.4
+## ✓ tibble  3.0.3     ✓ stringr 1.4.0
+## ✓ tidyr   1.1.1     ✓ forcats 0.5.0
+## ✓ readr   1.3.1</code></pre>
+<pre><code>## ── Conflicts ───── tidyverse_conflicts() ──
+## x dplyr::filter() masks stats::filter()
+## x dplyr::lag()    masks stats::lag()</code></pre>
+<pre class="r"><code>library(data.table)</code></pre>
+<pre><code>## 
+## Attaching package: &#39;data.table&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:purrr&#39;:
+## 
+##     transpose</code></pre>
+<pre><code>## The following objects are masked from &#39;package:dplyr&#39;:
+## 
+##     between, first, last</code></pre>
+<pre class="r"><code>u = UN %&gt;% na.omit()
+setDT(u, keep.rownames = &quot;country&quot;)
+u1 = u %&gt;% select(country, region, group, fertility, lifeExpF) 
+u2 = u %&gt;% select(country, ppgdp, pctUrban)
+
+u1 = u1 %&gt;% pivot_wider(names_from = region, values_from = fertility)
+u1 = u1 %&gt;% pivot_longer(c(4:10), names_to = &quot;region&quot;, values_to = &quot;fertility&quot;) %&gt;% na.omit()</code></pre>
+<p>Since the datasets that I used were already tidy, I demonstrated my knowledge on pivoting datasets by pivoting &quot;u1&quot; wider by using the values from the region column as new column names. I used the values from the fertility column to be the values for these new variables. I then reversed this command by using the pivot_longer function to bring the new region columns back under a single &quot;region&quot; column, and then doing the same for the fertility values. Additionally, I omitted the NA values that were generated in these commands.</p>
+</div>
+<div id="joiningmerging" class="section level2">
+<h2>2. Joining/Merging</h2>
+<pre class="r"><code>u_full = u1 %&gt;% left_join(u2) #joining by country</code></pre>
+<pre><code>## Joining, by = &quot;country&quot;</code></pre>
+<p>I used the left_join function to join the &quot;u1&quot; and &quot;u2&quot; datasets. The choice of join function was arbitrary, since all of the NA values were preliminarily omitted from the two datasets.</p>
+</div>
+<div id="wrangling" class="section level2">
+<h2>3. Wrangling</h2>
+<pre class="r"><code>u_full = u_full %&gt;% mutate_at(c(&quot;group&quot;),as.character)
+u_full = u_full %&gt;% mutate(pcturban_brackets = case_when(pctUrban &gt;= 90 ~ &quot;90+&quot;, 80 &lt;= pctUrban &amp; pctUrban &lt;= 89 ~ &quot;80-89&quot;, 70 &lt;= pctUrban &amp; pctUrban &lt;= 79 ~ &quot;70-79&quot;, pctUrban &lt;= 69 ~ &quot;60-69&quot;))
+u_full = u_full %&gt;% group_by(region) %&gt;% mutate(region_avg_pctUrban = mean(pctUrban))
+
+u_full %&gt;% group_by(region) %&gt;% summarise(mean(ppgdp))</code></pre>
+<pre><code>## `summarise()` ungrouping output (override with `.groups` argument)</code></pre>
+<pre><code>## # A tibble: 7 x 2
+##   region        `mean(ppgdp)`
+##   &lt;chr&gt;                 &lt;dbl&gt;
+## 1 Africa                2337.
+## 2 Asia                 11995.
+## 3 Caribbean            12191.
+## 4 Europe               27394.
+## 5 Latin Amer            6303.
+## 6 North America        46453.
+## 7 Oceania              12066.</code></pre>
+<pre class="r"><code>u_full %&gt;% select(country, lifeExpF, ppgdp) %&gt;% filter (ppgdp &gt; mean(ppgdp)) %&gt;% group_by(country) %&gt;% arrange(desc(ppgdp))</code></pre>
+<pre><code>## Adding missing grouping variables: `region`</code></pre>
+<pre><code>## # A tibble: 66 x 4
+## # Groups:   country [66]
+##    region        country       lifeExpF   ppgdp
+##    &lt;chr&gt;         &lt;chr&gt;            &lt;dbl&gt;   &lt;dbl&gt;
+##  1 Europe        Luxembourg        82.7 105095.
+##  2 Europe        Norway            83.5  84589.
+##  3 Asia          Qatar             78.2  72398.
+##  4 Europe        Switzerland       84.7  68880.
+##  5 Oceania       Australia         84.3  57119.
+##  6 Europe        Denmark           81.4  55830.
+##  7 Asia          Macao             83.8  49990.
+##  8 Europe        Sweden            83.6  48906.
+##  9 Europe        Netherlands       82.8  46910.
+## 10 North America United States     81.3  46546.
+## # … with 56 more rows</code></pre>
+<pre class="r"><code>u_full = u_full %&gt;% ungroup()</code></pre>
+<p>Firstly, I changed the group variable to a character variable by using the mutate function. Then, I mutated again to add a new variable that denoted the pctUrban bracket that a certain country fell within. I then grouped the data by region and generated a variable of the average of percentUrban by region. I then calculated the mean per capita GDP for each region. Lastly, I generated a list of each country's life expectancy and per capita GDP, arranged in descending order by per capita GDP, including only the countries that had a per capita GDP that was above the mean per capita GDP. Lastly, I ungrouped my data to return it to its original state.</p>
+<pre class="r"><code>u_full %&gt;% summarize_if(is.numeric, mean)</code></pre>
+<pre><code>## # A tibble: 1 x 5
+##   lifeExpF fertility  ppgdp pctUrban region_avg_pctUrban
+##      &lt;dbl&gt;     &lt;dbl&gt;  &lt;dbl&gt;    &lt;dbl&gt;               &lt;dbl&gt;
+## 1     72.1      2.78 12291.     57.1                57.1</code></pre>
+<pre class="r"><code>u_full %&gt;% summarize_if(is.numeric, sd)</code></pre>
+<pre><code>## # A tibble: 1 x 5
+##   lifeExpF fertility  ppgdp pctUrban region_avg_pctUrban
+##      &lt;dbl&gt;     &lt;dbl&gt;  &lt;dbl&gt;    &lt;dbl&gt;               &lt;dbl&gt;
+## 1     10.2      1.35 17412.     23.1                11.0</code></pre>
+<pre class="r"><code>u_full %&gt;% summarize_if(is.numeric, var)</code></pre>
+<pre><code>## # A tibble: 1 x 5
+##   lifeExpF fertility      ppgdp pctUrban region_avg_pctUrban
+##      &lt;dbl&gt;     &lt;dbl&gt;      &lt;dbl&gt;    &lt;dbl&gt;               &lt;dbl&gt;
+## 1     104.      1.83 303190837.     534.                121.</code></pre>
+<pre class="r"><code>u_full %&gt;% summarize_if(is.numeric, min)</code></pre>
+<pre><code>## # A tibble: 1 x 5
+##   lifeExpF fertility ppgdp pctUrban region_avg_pctUrban
+##      &lt;dbl&gt;     &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;               &lt;dbl&gt;
+## 1     48.1      1.13  115.       11                42.4</code></pre>
+<pre class="r"><code>u_full %&gt;% summarize_if(is.numeric, max)</code></pre>
+<pre><code>## # A tibble: 1 x 5
+##   lifeExpF fertility   ppgdp pctUrban region_avg_pctUrban
+##      &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt;               &lt;dbl&gt;
+## 1     87.1      6.92 105095.      100                  82</code></pre>
+<pre class="r"><code>u_full %&gt;% summarize_if(is.numeric, n_distinct)</code></pre>
+<pre><code>## # A tibble: 1 x 5
+##   lifeExpF fertility ppgdp pctUrban region_avg_pctUrban
+##      &lt;int&gt;     &lt;int&gt; &lt;int&gt;    &lt;int&gt;               &lt;int&gt;
+## 1      187       188   193       80                   7</code></pre>
+<pre class="r"><code>u_full %&gt;% filter(region == &quot;Asia&quot; | region == &quot;Europe&quot; | region == &quot;Latin Amer&quot; | region == &quot;Caribbean&quot;) %&gt;% group_by(region) %&gt;% summarize_if(is.numeric,mean)</code></pre>
+<pre><code>## # A tibble: 4 x 6
+##   region     lifeExpF fertility  ppgdp pctUrban region_avg_pctUrban
+##   &lt;chr&gt;         &lt;dbl&gt;     &lt;dbl&gt;  &lt;dbl&gt;    &lt;dbl&gt;               &lt;dbl&gt;
+## 1 Asia           74.6      2.43 11995.     57.4                57.4
+## 2 Caribbean      77.0      1.99 12191.     57.8                57.8
+## 3 Europe         80.7      1.59 27394.     70.5                70.5
+## 4 Latin Amer     77.4      2.43  6303.     70                  70</code></pre>
+<pre class="r"><code>u_full %&gt;% filter(region == &quot;Asia&quot; | region == &quot;Europe&quot; | region == &quot;Latin Amer&quot; | region == &quot;Caribbean&quot;) %&gt;% group_by(region) %&gt;% summarize_if(is.numeric,min)</code></pre>
+<pre><code>## # A tibble: 4 x 6
+##   region     lifeExpF fertility ppgdp pctUrban region_avg_pctUrban
+##   &lt;chr&gt;         &lt;dbl&gt;     &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;               &lt;dbl&gt;
+## 1 Asia           49.5      1.14  499        14                57.4
+## 2 Caribbean      63.9      1.45  613.       14                57.8
+## 3 Europe         73.5      1.13 1626.       48                70.5
+## 4 Latin Amer     69.4      1.8  1132.       29                70</code></pre>
+<pre class="r"><code>u_full %&gt;% filter(region == &quot;Asia&quot; | region == &quot;Europe&quot; | region == &quot;Latin Amer&quot; | region == &quot;Caribbean&quot;) %&gt;% group_by(region) %&gt;% summarize_if(is.numeric,max)</code></pre>
+<pre><code>## # A tibble: 4 x 6
+##   region     lifeExpF fertility   ppgdp pctUrban region_avg_pctUrban
+##   &lt;chr&gt;         &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt;               &lt;dbl&gt;
+## 1 Asia           87.1      5.97  72398.      100                57.4
+## 2 Caribbean      83.2      3.16  26461        99                57.8
+## 3 Europe         84.9      2.10 105095.       97                70.5
+## 4 Latin Amer     82.4      3.84  13503.       94                70</code></pre>
+<pre class="r"><code>u_full %&gt;% filter(region == &quot;Asia&quot; | region == &quot;Europe&quot; | region == &quot;Latin Amer&quot; | region == &quot;Caribbean&quot;) %&gt;% group_by(region) %&gt;% summarize_if(is.numeric,sd)</code></pre>
+<pre><code>## # A tibble: 4 x 6
+##   region     lifeExpF fertility  ppgdp pctUrban region_avg_pctUrban
+##   &lt;chr&gt;         &lt;dbl&gt;     &lt;dbl&gt;  &lt;dbl&gt;    &lt;dbl&gt;               &lt;dbl&gt;
+## 1 Asia           6.47     1.06  16742.     25.1                   0
+## 2 Caribbean      4.74     0.456  8519.     25.1                   0
+## 3 Europe         3.12     0.231 23820.     13.1                   0
+## 4 Latin Amer     3.05     0.501  3775.     16.9                   0</code></pre>
+<p>I started my this section by generating multiple single statistic tables using the numeric variables in the data set to explore the values for mean, standard deviation, variance, minimum, maximum, and distinct number of observations. After, I conducted the same calculations, except this time I grouped by region to see how these statistics differed between certain regions, specifically looking at Asia, Caribbean, Europe, and Latin America.</p>
+</div>
+<div id="visualizing" class="section level2">
+<h2>4. Visualizing</h2>
+<pre class="r"><code>u_full %&gt;% select_if(is.numeric) %&gt;% cor %&gt;% as.data.frame %&gt;% rownames_to_column %&gt;% pivot_longer(-1) %&gt;% ggplot(aes(rowname,name,fill=value)) +
+  geom_tile() +
+  geom_text(aes(label=round(value,2))) +
+  xlab(&quot;&quot;)+ylab(&quot;&quot;)+scale_fill_gradient2(low=&quot;red&quot;,high=&quot;green&quot;)</code></pre>
+<p><img src="../../project/project1_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<pre class="r"><code>u_full %&gt;% ggplot(aes(x = region, y = lifeExpF, fill = region)) +
+  geom_bar(stat=&quot;summary&quot;,fun.y=&quot;mean&quot;,position=&quot;dodge&quot;) +
+  geom_errorbar(stat=&quot;summary&quot;,position=&quot;dodge&quot;) +
+  facet_wrap(~pcturban_brackets) + 
+  ggtitle(&quot;Life Expectancy by dfsjdkj&quot;) + 
+  theme(axis.text.x = element_blank(), legend.position = &quot;right&quot;) + 
+  scale_y_continuous(labels=scales::label_number()) +
+  xlab(&quot;Region&quot;) +
+  ylab(&quot;Life Expectancy&quot;)</code></pre>
+<pre><code>## Warning: Ignoring unknown parameters: fun.y</code></pre>
+<pre><code>## No summary function supplied, defaulting to `mean_se()`
+## No summary function supplied, defaulting to `mean_se()`
+## No summary function supplied, defaulting to `mean_se()`
+## No summary function supplied, defaulting to `mean_se()`
+## No summary function supplied, defaulting to `mean_se()`
+## No summary function supplied, defaulting to `mean_se()`
+## No summary function supplied, defaulting to `mean_se()`
+## No summary function supplied, defaulting to `mean_se()`</code></pre>
+<p><img src="../../project/project1_files/figure-html/unnamed-chunk-5-1.png" width="672" /> This plot demonstrates the life expectancy value in years for each region in four different percent urban brackets. By faceting by percent urban, it is clear that percent urban affects each region differently, with Africa maintaining lower life expectancy values than the other regions regardless of percent urban. Additionally, Oceania significantly dropped in life expectancy in the 90+ percent urban bracket, most likely alluding to other factors at play.</p>
+<pre class="r"><code>u_full %&gt;% ggplot(aes(fertility, lifeExpF)) + 
+  geom_point(size=2,aes(color=pctUrban)) +
+  scale_color_gradient(low=&quot;red&quot;,high=&quot;green&quot;) +
+  ggtitle(&quot;Percent Urban vs Life Expectancy and Fertility&quot;) +
+  xlab(&quot;Fertility&quot;) +
+  ylab(&quot;Life Expectancy&quot;) </code></pre>
+<p><img src="../../project/project1_files/figure-html/unnamed-chunk-6-1.png" width="672" /> This plot demonstrates the relationship between the percent urban, life expectancy, and fertility values for the countries in the data set. The data shows that higher percent urban is associated with higher life expectancy and lower fertility, while lower percent urban is generally associated with lower life expectancy and lower fertility.</p>
+</div>
+<div id="dimensionality-reduction" class="section level2">
+<h2>5. Dimensionality Reduction</h2>
+<pre class="r"><code>library(cluster)
+three_regions = u_full %&gt;% filter(region == &quot;Asia&quot; | region == &quot;Europe&quot; | region == &quot;Latin Amer&quot;) 
+pam1 = three_regions %&gt;% pam(k=3)</code></pre>
+<pre><code>## Warning in data.matrix(x): NAs introduced by coercion
+
+## Warning in data.matrix(x): NAs introduced by coercion
+
+## Warning in data.matrix(x): NAs introduced by coercion
+
+## Warning in data.matrix(x): NAs introduced by coercion</code></pre>
+<pre class="r"><code>pamcluster = three_regions %&gt;% mutate(cluster=as.factor(pam1$cluster))
+pamcluster %&gt;% ggplot(aes(ppgdp,fertility,color=cluster,shape=pcturban_brackets)) +
+  geom_point()</code></pre>
+<p><img src="../../project/project1_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<p>I filtered my data by three different regions: Asia, Europe, and Latin America. I did this to see if PAM could separate these regions into separate clusters. I then ran PAM for three clusters on this filtered dataset. Then, I created the &quot;pamcluster&quot; dataset which was just pam1 with an additional column that showed which cluster each observation was a part of. Lastly, I generated a plot of &quot;pamcluster&quot; using geom_point as well as the variables of fertilty and per capita GDP. Each cluster had its own color, and each percent urban bracket had its own shape. It seems that the clustering was correctly generated.</p>
+</div>
+
+            
+        <hr>         <div class="related-posts">
+                <h5>Related Posts</h5>
+                
+              </div> 
+            </div>
+          </div>
+
+   <hr>  <div class="disqus">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+
+    (function() {
+      
+      
+      if (window.location.hostname == "localhost")
+        return;
+
+      var disqus_shortname = '';
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com/" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div> 
+        </div>
+      </div>
+    </div>
+
+    
+    <footer>
+  <div id="footer">
+    <div class="container">
+      <p class="text-muted">&copy; All rights reserved. Powered by <a href="https://gohugo.io/">Hugo</a> and
+      <a href="http://www.github.com/nurlansu/hugo-sustain/">sustain</a> with ♥</p>
+    </div>
+  </div>
+</footer>
+<div class="footer"></div>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<script src="../../js/docs.min.js"></script>
+<script src="../../js/main.js"></script>
+
+<script src="../../js/ie10-viewport-bug-workaround.js"></script>
+
+
+    
+  </body>
+</html>
