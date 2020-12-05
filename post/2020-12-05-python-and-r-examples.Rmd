@@ -7,3 +7,28 @@ categories: []
 tags: []
 description: ''
 ---
+
+# Intro
+
+Python and R are both programming languages that are extremely useful for data wrangling and analysis, especially in the realm of computational biology and bioinformatics. Some examples of this can be seen below.
+
+#R and Python 
+
+I will be starting in R by assigning the follow string of characters to `TheHard`.
+
+
+```{R}
+library(reticulate)
+TheHard = "Chloe x Halle's album Ungodly Hour"
+```
+
+Next, I will be switching to python, and save a different string of characters as `Truth`. Then, I am going to print out these strings together in the same python code chunk by using the print function.
+
+```{python}
+Truth = "is the best album of 2020."
+print(r.TheHard, Truth)
+```
+
+As we can see, `Ungodly Hour` is indeed the best album of 2020.
+
+![](/post/2020-12-05-python-and-r-examples_files/ungodly.png)
