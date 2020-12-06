@@ -13,29 +13,9 @@
       <pubDate>Sat, 05 Dec 2020 00:00:00 +0000</pubDate>
       
       <guid>/post/2020/12/05/python-and-r-examples/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Test Post</title>
-      <link>/post/2020/12/03/test-post/</link>
-      <pubDate>Thu, 03 Dec 2020 00:00:00 +0000</pubDate>
-      
-      <guid>/post/2020/12/03/test-post/</guid>
-      <description> Heading of my post! Content of my post!
-Subheading More content
-hist(quakes$mag)   </description>
-    </item>
-    
-    <item>
-      <title>Hello R Markdown</title>
-      <link>/post/2015/07/23/hello-r-markdown/</link>
-      <pubDate>Thu, 23 Jul 2015 21:13:14 -0500</pubDate>
-      
-      <guid>/post/2015/07/23/hello-r-markdown/</guid>
-      <description>R Markdown This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see http://rmarkdown.rstudio.com.
-You can embed an R code chunk like this:
-summary(cars) ## speed dist ## Min. : 4.0 Min. : 2.00 ## 1st Qu.:12.0 1st Qu.: 26.00 ## Median :15.0 Median : 36.00 ## Mean :15.4 Mean : 42.98 ## 3rd Qu.</description>
+      <description>Intro Python and R are both programming languages that are extremely useful for data wrangling and analysis, especially in the realm of computational biology and bioinformatics. Some examples of this can be seen below.
+ R and Python I will be starting in R by assigning the follow string of characters to TheHard.
+library(reticulate) TheHard = &amp;quot;Chloe x Halle&amp;#39;s album Ungodly Hour&amp;quot; Next, I will be switching to python, and save a different string of characters as Truth.</description>
     </item>
     
   </channel>
