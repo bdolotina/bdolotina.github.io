@@ -8,6 +8,7 @@ output:
     toc_float:
       collapsed: no
       smooth_scroll: yes
+hidedate: true
 ---
 
 ```{r setup, include=FALSE}

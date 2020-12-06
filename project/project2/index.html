@@ -57,14 +57,6 @@
             <strong><a href="../../project/project2/">Project 2: Modeling, Testing, and Predicting</a></strong>
           </h3>
         </div>
- 
-<div class="blog-title">
-          <h4>
-         January 1, 0001 
-            &nbsp;&nbsp;
-            
-          </h4>
-        </div>
 
         <div class="panel panel-default">
           <div class="panel-body">
@@ -121,7 +113,7 @@ adonis(dist~treat,data=crohnD)</code></pre>
 ## Terms added sequentially (first to last)
 ## 
 ##            Df SumsOfSqs MeanSqs F.Model      R2 Pr(&gt;F)
-## treat       2      1111  555.49  1.3105 0.02247  0.245
+## treat       2      1111  555.49  1.3105 0.02247  0.259
 ## Residuals 114     48323  423.89         0.97753       
 ## Total     116     49434                 1.00000</code></pre>
 <pre class="r"><code>#calculations for observed F
@@ -135,7 +127,7 @@ SSW = new %&gt;% group_by(treat) %&gt;% select(nrAdvE, BMI, height, weight) %&gt
 ((SST-SSW)/2)/(SSW/114) })
 
 mean(Fvals &gt; obs_F)</code></pre>
-<pre><code>## [1] 0.394</code></pre>
+<pre><code>## [1] 0.422</code></pre>
 <pre class="r"><code>{hist(Fvals, prob = T); abline(v = obs_F, col=&quot;blue&quot;, add = T)}</code></pre>
 <p><img src="../../project/project2_files/figure-html/unnamed-chunk-3-1.png" width="768" style="display: block; margin: auto;" /></p>
 <p>Null hypothesis: The center and spread of the three treatment groups were the same.</p>
@@ -270,8 +262,8 @@ summary(fit)</code></pre>
 <pre class="r"><code>samp_distn %&gt;% t %&gt;% as.data.frame %&gt;% summarize_all(sd)</code></pre>
 <pre><code>## (Intercept) weightc treatd1 treatd2 weightc:treatd1
 weightc:treatd2
-## 1 0.5035319 0.04915491 0.6356345 0.6680544 0.05413886
-0.05591217</code></pre>
+## 1 0.5145142 0.05020148 0.6380476 0.6771105 0.05532781
+0.05687079</code></pre>
 <p>The bootstrapped standard errors calculated above are incredibly similar to the original and robust standard errors calculated earlier. The p values remain to be the same, and thus the bootstrapped standard errors do not make any of the variables significant. # <strong>5. (25 pts)</strong></p>
 <pre class="r"><code>crohnD = crohnD %&gt;% mutate(treatb = ifelse(treat==&quot;placebo&quot;,0,1))
 fit1 = glm(treatb~weightc+nrAdvE, data = crohnD, family = binomial(link = &quot;logit&quot;))
